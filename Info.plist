@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundleExecutable</key>
+    <string>NetscapeSecurityWrapper</string>
+    <key>CFBundleGetInfoString</key>
+    <string>Netscape Security Wrapper</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.google.netscapesecurity</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundlePackageType</key>
+    <string>BRPL</string>
+    <key>WebPluginDescription</key>
+    <string>This plugin helps your administrators manage the MIME types listed below.</string>
+    <key>WebPluginMIMETypesFilename</key>
+    <string>com.google.netscapesecurity.plist</string>
+    <key>WebPluginName</key>
+    <string>Netscape Security Wrapper</string>
+    <key>CFBundleGetInfoString</key>
+    <string>Netscape Security Wrapper %Version%</string>
+    <key>CFBundleShortVersionString</key>
+    <string>%Version%</string>
+    <key>CFPlugInDynamicRegistration</key>
+    <string>YES</string>
+    <key>CFPlugInNeedsDynamicRegistration</key>
+    <string>YES</string>
+    <key>CFPlugInDynamicRegisterFunction</key>
+    <string>DynamicRegistrationFunction</string>
+    <key>CFPlugInFactories</key>
+        <!-- This is an empty CFDictionary so that I can use CFPlugInDynamicRegistration -->
+    <dict>
+    </dict>
+</dict>
+</plist>

@@ -1,0 +1,5 @@
+2012-02-23 Tavis Ormandy <taviso@google.com>
+    * initial release.
+
+2012-03-08 Tavis Ormandy <taviso@google.com>
+    * Use -fno-constant-cfstrings on OSX for compatability with applications that reference strings after unloading plugins.

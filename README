@@ -1,0 +1,85 @@
+Introduction
+--------------------------------
+
+This is a NPAPI plugin intended to intercept the loading of other plugins and
+apply simple policy decisions. The intention is to allow enterprise
+administrators to deploy deprecated, unreliable or unsafe third party plugins
+while minimising the security exposure.
+
+The plugin works by proxying api calls from the browser to all the configured
+plugins and inserting small shims that verify that the administrative policy is
+enforced. Plugins are configured in a single global configuration file, and all
+the relevant information is forwarded to the browser (MIME Types, Extensions,
+Etc.).
+
+You can think of this as a xinetd for browser plugins.
+
+http://code.google.com/p/nssecurity
+
+Configuration
+--------------------------------
+
+All configuration happens in the file /etc/nssecurity.ini, intended to be
+manageable by cfengine, puppet, or other similar tools. The format is described
+in the sample configuration file included.
+
+The most basic policy decision is a domain whitelist. For example, by creating
+a configuration like this:
+
+    [Third Party Plugin]
+    LoadPlugin=/usr/lib/thirdparty/plugin.so
+    AllowDomains=*.corp.megacorp.com,*.lan
+
+Or on Apple systems, which use directory bundles called .plugin instead of
+shared objects:
+
+    [Third Party Plugin]
+    LoadPlugin=/Library/Third Party Plug-Ins/BrowserThing.plugin
+    AllowDomains=*.corp.megacorp.com,*.lan
+
+Now the plugin can only be instantiated by the domains listed. By default, the
+plugins must be loaded over https, as this is the only way to have any
+confidence the domain being reported by the browser is accurate. However, you
+can disable the protocol checks like so if you really need it:
+
+    [Third Party Plugin]
+    LoadPlugin=/usr/lib/thirdparty/plugin.so
+    AllowDomains=*.corp.megacorp.com,*.lan
+    AllowInsecure=1
+
+Currently supported directives are as follows:
+
+    AllowInsecure           Do not require https for domains listed in
+                            AllowDomains (not recommended).
+
+    FriendlyWarning         Optional message displayed to user when a plugin is
+                            disallowed, can be specified in [Global], or per-plugin
+
+    LoadPlugin              Filename of a plugin you want wrapped with the security wrapper.
+
+    AllowedDomains          List of domains you want to allow to load this
+                            plugin, these are matched using the format described in fnmatch(3).
+
+    PluginDescription       Description displayed by the browser when a user
+                            looks at about:plugins (Linux Only, Apple use the
+                            Contents of Info.plist)
+
+
+There should be one [Global] section, containing default options, followed by
+an arbitrary number of plugin specific sections. The name of each new section
+is not important, but is displayed in some debugging message, so make it
+meaningful.
+
+Each plugin section requires a LoadPlugin, directive. Everything else is optional.
+
+
+Debugging
+--------------------------------
+
+I find these commands useful when debugging.
+
+$ google-chrome --user-data-dir=/tmp --plugin-launcher='xterm -e gdb -ex r --args'
+$ google-chrome --user-data-dir=/tmp --plugin-launcher='xterm -hold -e valgrind'
+
+$ make EXTRA_CPPFLAGS="-UNDEBUG -DENABLE_RUNTIME_TESTS" EXTRA_CFLAGS="-ggdb3 -O0"
+

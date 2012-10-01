@@ -1,0 +1,3 @@
+We require these files from the NPAPI SDK, npapi.h npfunctions.h npruntime.h nptypes.h
+
+http://code.google.com/p/npapi-sdk
